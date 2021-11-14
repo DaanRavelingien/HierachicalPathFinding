@@ -22,9 +22,16 @@ public class WorldGraphVisualizer : MonoBehaviour
     [SerializeField]
     TileBase m_ClusterBorderTile = null;
 
+    private bool m_HasVisualized = false;
+
     private void Update()
     {
+        if (m_HasVisualized || m_GridPreProcessor.Clusters == null)
+            return;
+
         ShowPreProcessedGraph();
+
+        m_HasVisualized = true;
     }
 
     private void ShowPreProcessedGraph()

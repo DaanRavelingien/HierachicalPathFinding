@@ -35,13 +35,10 @@ public class GridPreProcessor : MonoBehaviour
         private set { m_Clusters = value; }
     }
 
-    private void Awake()
+    public void PreProcessingGrid(GridWorld.Cell[,] Cells, int gridSize)
     {
         m_Clusters = new Cluster[m_ClusterResolution, m_ClusterResolution];
-    }
 
-    public void PreProcessingGrid(WorldGenerator.Cell[,] grid, int gridSize)
-    {
         int entranceMinWidth = 3;
 
         m_ClusterSize = gridSize / m_ClusterResolution;
@@ -58,7 +55,7 @@ public class GridPreProcessor : MonoBehaviour
             }
         }
 
-        CreateEntrances(grid, entranceMinWidth);
+        CreateEntrances(Cells, entranceMinWidth);
         CreateClusterConnections();
    
     }
@@ -69,7 +66,7 @@ public class GridPreProcessor : MonoBehaviour
         public int widht;
     }
 
-    private void CreateEntrances(WorldGenerator.Cell[,] grid, int entranceminWidht)
+    private void CreateEntrances(GridWorld.Cell[,] Cells, int entranceminWidht)
     {
         //going through all the clusters to find the entrance
         for(int w = 0; w<m_ClusterResolution; ++w)
@@ -86,21 +83,21 @@ public class GridPreProcessor : MonoBehaviour
                 if(w+1 < m_ClusterResolution)
                 {
                     Cluster rightNeighbourCluster = m_Clusters[w + 1, h];
-                    HandleEntrancesRight(currentCluster, rightNeighbourCluster, entranceminWidht, grid);
+                    HandleEntrancesRight(currentCluster, rightNeighbourCluster, entranceminWidht, Cells);
                 }
 
                 //TopBorder
                 if (h + 1 < m_ClusterResolution)
                 {
                     Cluster topNeighbourCluster = m_Clusters[w, h + 1];
-                    HandleEntrancesTop(currentCluster, topNeighbourCluster, entranceminWidht, grid);
+                    HandleEntrancesTop(currentCluster, topNeighbourCluster, entranceminWidht, Cells);
                 }
             }
         }
     }
 
     private void HandleEntrancesRight(Cluster currentCluster, Cluster rightNeighbourCluster,
-        int entranceminWidht, WorldGenerator.Cell[,] grid)
+        int entranceminWidht, GridWorld.Cell[,] Cells)
     {
 
         Entrance currentEntrance = new Entrance();
@@ -108,14 +105,14 @@ public class GridPreProcessor : MonoBehaviour
         //going through the cells bordering the 2 clusters
         for (int i = 0; i < m_ClusterSize; ++i)
         {
-            WorldGenerator.Cell currentClusterCell
-                = grid[currentCluster.pos.x + m_ClusterSize-1, currentCluster.pos.y + i];
-            WorldGenerator.Cell neighbourClusterCell
-                = grid[currentCluster.pos.x + m_ClusterSize, currentCluster.pos.y + i];
+            GridWorld.Cell currentClusterCell
+                = Cells[currentCluster.pos.x + m_ClusterSize-1, currentCluster.pos.y + i];
+            GridWorld.Cell neighbourClusterCell
+                = Cells[currentCluster.pos.x + m_ClusterSize, currentCluster.pos.y + i];
 
             //check if the current cell is a wall or if the neighbouring cell is a wall
-            if (currentClusterCell.cellType == WorldGenerator.CellType.wall
-                || neighbourClusterCell.cellType == WorldGenerator.CellType.wall)
+            if (currentClusterCell.cellType == GridWorld.CellType.wall
+                || neighbourClusterCell.cellType == GridWorld.CellType.wall)
             {
                 //if we already had an entrance add the nodes to the clusters
                 if (currentEntrance.widht > 0)
@@ -214,21 +211,21 @@ public class GridPreProcessor : MonoBehaviour
     }
 
     private void HandleEntrancesTop(Cluster currentCluster, Cluster topNeighbourCluster,
-        int entranceminWidht, WorldGenerator.Cell[,] grid)
+        int entranceminWidht, GridWorld.Cell[,] Cells)
     {
         Entrance currentEntrance = new Entrance();
 
         //going through the cells bordering the 2 clusters
         for (int i = 0; i < m_ClusterSize; ++i)
         {
-            WorldGenerator.Cell currentClusterCell
-                = grid[currentCluster.pos.x + i, currentCluster.pos.y + m_ClusterSize-1];
-            WorldGenerator.Cell neighbourClusterCell
-                = grid[currentCluster.pos.x + i, currentCluster.pos.y + m_ClusterSize];
+            GridWorld.Cell currentClusterCell
+                = Cells[currentCluster.pos.x + i, currentCluster.pos.y + m_ClusterSize-1];
+            GridWorld.Cell neighbourClusterCell
+                = Cells[currentCluster.pos.x + i, currentCluster.pos.y + m_ClusterSize];
 
             //check if the current cell is a wall or if the neighbouring cell is a wall
-            if (currentClusterCell.cellType == WorldGenerator.CellType.wall
-                || neighbourClusterCell.cellType == WorldGenerator.CellType.wall)
+            if (currentClusterCell.cellType == GridWorld.CellType.wall
+                || neighbourClusterCell.cellType == GridWorld.CellType.wall)
             {
                 //if we already had an entrance add the nodes to the clusters
                 if (currentEntrance.widht > 0)
