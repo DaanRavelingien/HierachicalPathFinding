@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 public class WorldGraphVisualizer : MonoBehaviour
 {
     [SerializeField]
-    Tilemap m_GraphTileMap = null;
+    GameObject m_GraphLayer = null;
 
     [SerializeField]
     GridPreProcessor m_GridPreProcessor = null;
@@ -53,7 +53,7 @@ public class WorldGraphVisualizer : MonoBehaviour
             {
                 if(w <= 0 || h<=0 || w>=m_GridPreProcessor.Clustersize-1 || h>= m_GridPreProcessor.Clustersize-1)
                 {
-                    m_GraphTileMap.SetTile(new Vector3Int(cluster.pos.x + w, cluster.pos.y + h, 0)
+                    m_GraphLayer.GetComponent<Tilemap>().SetTile(new Vector3Int(cluster.pos.x + w, cluster.pos.y + h, 0)
                 , m_ClusterBorderTile);
                 }
             }
@@ -66,7 +66,7 @@ public class WorldGraphVisualizer : MonoBehaviour
         {
             NodeGraph.Node node = m_GridPreProcessor.NodeGraph.Nodes[i];
 
-            m_GraphTileMap.SetTile(new Vector3Int(node.pos.x, node.pos.y, 0)
+            m_GraphLayer.GetComponent<Tilemap>().SetTile(new Vector3Int(node.pos.x, node.pos.y, 0)
                 , m_EntranceNodeTile);
         }
     }
@@ -77,6 +77,7 @@ public class WorldGraphVisualizer : MonoBehaviour
         while (m_ConnectionLines.Count <= m_GridPreProcessor.NodeGraph.Connections.Count)
         {
             GameObject connectionLine = Instantiate(m_ConnectionLinePrefab);
+            connectionLine.transform.SetParent(m_GraphLayer.transform);
             m_ConnectionLines.Add(connectionLine);
         }
 
