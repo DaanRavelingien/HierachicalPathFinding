@@ -27,13 +27,13 @@ public class CameraController : MonoBehaviour
 
         //camera movement
         Vector3 cameraMovement = new Vector3(0, 0, 0);
-        if(Input.GetKey(KeyCode.W))
+        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
             cameraMovement.y += Time.deltaTime * m_CameraSpeed;
-        if(Input.GetKey(KeyCode.S))
+        if(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
             cameraMovement.y -= Time.deltaTime * m_CameraSpeed;
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             cameraMovement.x -= Time.deltaTime * m_CameraSpeed;
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
             cameraMovement.x += Time.deltaTime * m_CameraSpeed;
 
         m_Camera.transform.position += cameraMovement;

@@ -62,4 +62,24 @@ public class GridWorld : MonoBehaviour
 
         m_GridPreProcessor.PreProcessingGrid(m_WorldCells, m_WorldSize.x);
     }
+
+    public void ToggleCell(Vector2 pos)
+    {
+        if(pos.x >= 0 || pos.y >= 0 || pos.x < m_WorldSize.x || pos.y < m_WorldSize.y)
+        {
+            Vector2Int cellPos = new Vector2Int((int)pos.x,(int)pos.y);
+            Cell cell = m_WorldCells[cellPos.x, cellPos.y];
+
+            if (cell.cellType == CellType.wall)
+                m_WorldCells[cellPos.x, cellPos.y].cellType = CellType.ground;
+            else if(cell.cellType == CellType.ground)
+                m_WorldCells[cellPos.x, cellPos.y].cellType = CellType.wall;
+
+            //rendering the world again so its correct
+            GetComponent<WorldVisualizer>().SetVisualized();
+
+            //recalculating the cluster where the cell was in
+            m_GridPreProcessor.PreProcessCluster(cellPos);
+        }
+    }
 }

@@ -60,6 +60,15 @@ public class GridPreProcessor : MonoBehaviour
    
     }
 
+    public void PreProcessCluster(Vector2Int cell)
+    {
+
+
+
+        //rerendering the graph visualizer 
+        GetComponentInChildren<WorldGraphVisualizer>().SetVisualized();
+    }
+
     private struct Entrance
     {
         public Vector2Int startCell;
@@ -348,6 +357,6 @@ public class GridPreProcessor : MonoBehaviour
 
     private void CreateClusterConnections()
     {
-
+        
     }
 }

@@ -23,7 +23,10 @@ public class WorldVisualizer : MonoBehaviour
     private Dictionary<string, TileBase> m_Tiles = new Dictionary<string, TileBase>();
 
     private bool m_HasVisualized = false;
-
+    public void SetVisualized()
+    {
+        m_HasVisualized = false;
+    }
     private void Awake()
     {
         //putting the list of tile names and tile bases in a dict for easier use

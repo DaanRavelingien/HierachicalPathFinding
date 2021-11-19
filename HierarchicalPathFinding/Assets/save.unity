@@ -230,10 +230,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 123380757}
+  - component: {fileID: 123380758}
   - component: {fileID: 123380755}
   - component: {fileID: 123380756}
   m_Layer: 0
-  m_Name: GraphLayer
+  m_Name: WorldGraph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -337,8 +338,25 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1994130714}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &123380758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123380754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b20b7b0500a82304da20826e2ba90d65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_GraphLayer: {fileID: 123380754}
+  m_GridPreProcessor: {fileID: 1994130716}
+  m_ConnectionLinePrefab: {fileID: 1607452686995467842, guid: 014f22901c7df48449d49746866842f5, type: 3}
+  m_EntranceNodeTile: {fileID: 11400000, guid: b024abab95375af40a4068175b5e95c6, type: 2}
+  m_ClusterBorderTile: {fileID: 11400000, guid: 4bab1224a6d10ad48bed8b6086c958e4, type: 2}
 --- !u!1 &1049013320
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,7 +473,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1994130714}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1487213008
 GameObject:
@@ -487,7 +505,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1994130714}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1487213010
 TilemapRenderer:
@@ -585,9 +603,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1994130714}
   - component: {fileID: 1994130713}
+  - component: {fileID: 1994130718}
   - component: {fileID: 1994130712}
+  - component: {fileID: 1994130717}
   - component: {fileID: 1994130716}
-  - component: {fileID: 1994130715}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -607,6 +626,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0a99cebb866754695544e647f0b911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_GridWorld: {fileID: 1994130718}
+--- !u!156049354 &1994130713
+Grid:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994130711}
+  m_Enabled: 1
+  m_CellSize: {x: 1, y: 1, z: 0}
+  m_CellGap: {x: 0, y: 0, z: 0}
+  m_CellLayout: 0
+  m_CellSwizzle: 0
+--- !u!4 &1994130714
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994130711}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 123380757}
+  - {fileID: 1049013323}
+  - {fileID: 1487213009}
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1994130716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994130711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeda1179dac01984ea95ef6a8010db4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ClusterResolution: 27
+--- !u!114 &1994130717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994130711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ea257bb9ec1cdd46856a299fc43184e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_GridWorld: {fileID: 1994130718}
   m_BaseTileMap: {fileID: 1049013321}
   m_BeautyTileMap: {fileID: 1487213011}
   m_TileNames:
@@ -651,65 +726,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 54938e7e079d46f4485b33d117497d81, type: 2}
   - {fileID: 11400000, guid: 27767c9bf94238d48bb38a6fa8c04688, type: 2}
   - {fileID: 11400000, guid: 51df0871d6f24d84d898de3e0356400c, type: 2}
+--- !u!114 &1994130718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994130711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836439779106f4f4f905ab146311c136, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_WorldSize: {x: 243, y: 243}
-  m_WallThickness: 3
+  m_WorldGenerator: {fileID: 1994130712}
   m_GridPreProcessor: {fileID: 1994130716}
---- !u!156049354 &1994130713
-Grid:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994130711}
-  m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 0}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 0
---- !u!4 &1994130714
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994130711}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1049013323}
-  - {fileID: 1487213009}
-  - {fileID: 123380757}
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1994130715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994130711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b20b7b0500a82304da20826e2ba90d65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_GraphTileMap: {fileID: 123380755}
-  m_GridPreProcessor: {fileID: 1994130716}
-  m_ConnectionLinePrefab: {fileID: 1607452686995467842, guid: 014f22901c7df48449d49746866842f5, type: 3}
-  m_EntranceNodeTile: {fileID: 11400000, guid: b024abab95375af40a4068175b5e95c6, type: 2}
-  m_ClusterBorderTile: {fileID: 11400000, guid: 4bab1224a6d10ad48bed8b6086c958e4, type: 2}
---- !u!114 &1994130716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994130711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeda1179dac01984ea95ef6a8010db4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ClusterResolution: 27

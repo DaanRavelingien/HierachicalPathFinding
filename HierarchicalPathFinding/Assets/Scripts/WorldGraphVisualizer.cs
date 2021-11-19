@@ -23,6 +23,10 @@ public class WorldGraphVisualizer : MonoBehaviour
     TileBase m_ClusterBorderTile = null;
 
     private bool m_HasVisualized = false;
+    public void SetVisualized()
+    {
+        m_HasVisualized = false;
+    }
 
     private void Update()
     {
