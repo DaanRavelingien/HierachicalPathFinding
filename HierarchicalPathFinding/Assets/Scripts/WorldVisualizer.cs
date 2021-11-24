@@ -226,7 +226,6 @@ public class WorldVisualizer : MonoBehaviour
                                 m_Tiles.TryGetValue("WallTile11", out tile);
                                 break;
                             default:
-                                Debug.LogError("unknown wall configuration: " + wallcaseNr);
                                 break;
                         }
 

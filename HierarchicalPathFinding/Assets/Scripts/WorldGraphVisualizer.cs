@@ -77,24 +77,44 @@ public class WorldGraphVisualizer : MonoBehaviour
 
     private void DrawConnections()
     {
+        //disabeling all connections
+        foreach (GameObject line in m_ConnectionLines)
+            line.SetActive(false);
+
         //creating lines for the conections if there are not enough
-        while (m_ConnectionLines.Count <= m_GridPreProcessor.NodeGraph.Connections.Count)
+        while (m_ConnectionLines.Count < m_GridPreProcessor.NodeGraph.Connections.Count/2)
         {
             GameObject connectionLine = Instantiate(m_ConnectionLinePrefab);
             connectionLine.transform.SetParent(m_GraphLayer.transform);
+            connectionLine.SetActive(false);
             m_ConnectionLines.Add(connectionLine);
         }
 
-        for(int i = 0; i< m_GridPreProcessor.NodeGraph.Connections.Count; i++)
+        //the connections are doubled up to be in both directions so we will only draw half of them
+        List<Vector3[]> singleConnections = new List<Vector3[]>();
+
+        foreach(NodeGraph.Node node in m_GridPreProcessor.NodeGraph.Nodes)
         {
-            NodeGraph.Connection connection = m_GridPreProcessor.NodeGraph.Connections[i];
+            Vector3 pos1 = new Vector3(node.pos.x + 0.5f, node.pos.y + 0.5f, 0);
 
-            Vector3 pos1 = new Vector3(connection.leftNode.pos.x +0.5f, connection.leftNode.pos.y+0.5f, 0);
-            Vector3 pos2 = new Vector3(connection.rightNode.pos.x+0.5f, connection.rightNode.pos.y+0.5f, 0);
+            foreach (NodeGraph.Connection connection in m_GridPreProcessor.NodeGraph.GetConnections(node))
+            {
+                Vector3 pos2 = new Vector3(connection.otherNode.pos.x + 0.5f, connection.otherNode.pos.y + 0.5f, 0);
 
-            Vector3[] positions = { pos1, pos2 };
+                if (singleConnections.Exists(x => (x[0] == pos1 && x[1] == pos2) 
+                    || (x[0] == pos2 && x[1] == pos1)))
+                    continue;
 
-            m_ConnectionLines[i].GetComponent<LineRenderer>().SetPositions(positions);
+                Vector3[] points = { pos1, pos2 };
+                singleConnections.Add(points);
+            }
+        }
+
+        //setting the points to the line renderers
+        for(int i = 0; i<singleConnections.Count; i++)
+        {
+            m_ConnectionLines[i].GetComponent<LineRenderer>().SetPositions(singleConnections[i]);
+            m_ConnectionLines[i].SetActive(true);
         }
     }
 }

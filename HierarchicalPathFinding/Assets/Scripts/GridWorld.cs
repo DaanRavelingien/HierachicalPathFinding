@@ -79,7 +79,7 @@ public class GridWorld : MonoBehaviour
             GetComponent<WorldVisualizer>().SetVisualized();
 
             //recalculating the cluster where the cell was in
-            m_GridPreProcessor.PreProcessCluster(cellPos);
+            m_GridPreProcessor.PreProcessCluster(cellPos, Cells);
         }
     }
 }

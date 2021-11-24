@@ -55,11 +55,6 @@ public class Pathfinding : MonoBehaviour
         //keep searching until the goal if found
         while (openCells.Count > 0)
         {
-            //if there are no more cells in the open list that means there is no path avialable
-            //so we return an empty list
-            if (openCells.Count == 0)
-                return new List<Vector2Int>();
-
             //find the cell with the lowest cost in the open list
             foreach(CellRecord cellRecord in openCells)
             {
@@ -100,6 +95,10 @@ public class Pathfinding : MonoBehaviour
                     openCells.Add(newCellRecord);                
             }
         }
+
+        //if no path was found just return an empty list
+        if (currentCellRecord.cellPos != goalCellPos)
+            return new List<Vector2Int>();                    
 
         //tracing our path back
         List<Vector2Int> pathCells = new List<Vector2Int>();
