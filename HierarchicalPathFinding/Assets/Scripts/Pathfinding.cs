@@ -8,6 +8,9 @@ public class Pathfinding : MonoBehaviour
     [SerializeField]
     GridWorld m_World = null;
 
+    [SerializeField]
+    PathVisualizer m_PathVisualizer = null;
+
     Vector4 m_SearchRect = new Vector4();
     public Vector4 SearchRect
     {
@@ -28,34 +31,60 @@ public class Pathfinding : MonoBehaviour
         public float estimatedTotalCost; // f-cost (= costSoFar + h-cost)
     }
 
-    public List<Vector2Int> FindPathAStar(Vector2Int startCellPos, Vector2Int goalCellPos)
+    private Vector2Int m_StartCellPos = new Vector2Int();
+    public Vector2Int StartPos
     {
-        if (!IsValid(startCellPos))
-            Debug.LogError("StartcellPos is not valid");
-        if (!IsValid(goalCellPos))
-            Debug.LogError("GoalcellPos is not valid");
-        if (startCellPos == goalCellPos)
-            Debug.LogWarning("We are already at the destination");
-        if (m_World.Cells[startCellPos.x, startCellPos.y].cellType == GridWorld.CellType.wall
-            || m_World.Cells[goalCellPos.x, goalCellPos.y].cellType == GridWorld.CellType.wall)
-            Debug.LogError("Start or Goal is blocked");
+        get { return m_StartCellPos; }
+        set { m_StartCellPos = value; }
+    }
 
+    private Vector2Int m_GoalCellPos = new Vector2Int();
+    public Vector2Int GoalPos
+    {
+        get { return m_GoalCellPos; }
+        set { m_GoalCellPos = value; }
+    }
+
+    public List<Vector2Int> FindPathAStar()
+    {
+        if (!IsValid(StartPos))
+        {
+            Debug.LogError("StartcellPos is not valid");
+            return new List<Vector2Int>();
+        }
+        if (!IsValid(GoalPos))
+        {
+            Debug.LogError("GoalcellPos is not valid");
+            return new List<Vector2Int>();
+        }
+        if (StartPos == GoalPos)
+        {
+            Debug.LogWarning("We are already at the destination");
+            return new List<Vector2Int>();
+        }
+        if (m_World.Cells[StartPos.x, StartPos.y].cellType == GridWorld.CellType.wall
+            || m_World.Cells[GoalPos.x, GoalPos.y].cellType == GridWorld.CellType.wall)
+        {
+            Debug.LogError("Start or Goal is is a wall");
+            return new List<Vector2Int>();
+        }
 
         List<CellRecord> closedCells = new List<CellRecord>();
         List<CellRecord> openCells = new List<CellRecord>();
         CellRecord currentCellRecord = new CellRecord();
         
         //setting values to start our A* pathfinding
-        currentCellRecord.cellPos = startCellPos;
+        currentCellRecord.cellPos = StartPos;
         currentCellRecord.parentCell = null;
         currentCellRecord.costSoFar = 0;
-        currentCellRecord.estimatedTotalCost = CalcHeuristicCost(startCellPos, goalCellPos);
+        currentCellRecord.estimatedTotalCost = CalcHeuristicCost(StartPos, GoalPos);
         openCells.Add(currentCellRecord);
 
         //keep searching until the goal if found
         while (openCells.Count > 0)
         {
             //find the cell with the lowest cost in the open list
+            currentCellRecord.estimatedTotalCost = float.MaxValue;
             foreach(CellRecord cellRecord in openCells)
             {
                 if (currentCellRecord.estimatedTotalCost > cellRecord.estimatedTotalCost)
@@ -63,7 +92,7 @@ public class Pathfinding : MonoBehaviour
             }
 
             //checking if this cell is the goal if so exit the loop
-            if (currentCellRecord.cellPos == goalCellPos)
+            if (currentCellRecord.cellPos == GoalPos)
                 break;
 
             //removing the cell from the open list and adding it to the closed list
@@ -79,7 +108,7 @@ public class Pathfinding : MonoBehaviour
                 newCellRecord.parentCell = currentCellRecord.cellPos;
                 //the connection cost between 2 cells is just 1
                 newCellRecord.costSoFar = currentCellRecord.costSoFar + 1;
-                newCellRecord.estimatedTotalCost = newCellRecord.costSoFar + CalcHeuristicCost(cellPos, goalCellPos);
+                newCellRecord.estimatedTotalCost = newCellRecord.costSoFar + CalcHeuristicCost(cellPos, GoalPos);
 
                 //if a cell with the same pos is in the open list with a lower costSoFar skip this cell
                 if (openCells.Exists(x => x.cellPos == newCellRecord.cellPos
@@ -91,13 +120,13 @@ public class Pathfinding : MonoBehaviour
                 if (closedCells.Exists(x => x.cellPos == newCellRecord.cellPos
                      && x.costSoFar <= newCellRecord.costSoFar))
                     continue;
-                else
-                    openCells.Add(newCellRecord);                
+                
+                openCells.Add(newCellRecord);                
             }
         }
 
         //if no path was found just return an empty list
-        if (currentCellRecord.cellPos != goalCellPos)
+        if (currentCellRecord.cellPos != GoalPos)
             return new List<Vector2Int>();                    
 
         //tracing our path back
@@ -112,6 +141,12 @@ public class Pathfinding : MonoBehaviour
 
         //reversing our path so our start is at the front an goal at the back of the list
         pathCells.Reverse();
+
+        //setting the path of the path visualizer and redrawing it
+        m_PathVisualizer.Path = pathCells;
+        m_PathVisualizer.StartPos = StartPos;
+        m_PathVisualizer.GoalPos = GoalPos;
+        m_PathVisualizer.SetVisualized();
 
         return pathCells;
     }
