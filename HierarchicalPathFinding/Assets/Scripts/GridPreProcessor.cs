@@ -7,6 +7,9 @@ public class GridPreProcessor : MonoBehaviour
     [SerializeField]
     private int m_ClusterResolution = 3;
 
+    [SerializeField]
+    private Pathfinding m_Pathfinding = null;
+
     private int m_EntranceWidth = 3;
 
     private int m_ClusterSize = 9;
@@ -37,6 +40,12 @@ public class GridPreProcessor : MonoBehaviour
         private set { m_Clusters = value; }
     }
 
+    private struct Entrance
+    {
+        public Vector2Int startCell;
+        public int widht;
+    }
+
     public void PreProcessingGrid(GridWorld.Cell[,] Cells, int gridSize)
     {
         m_Clusters = new Cluster[m_ClusterResolution, m_ClusterResolution];
@@ -56,7 +65,14 @@ public class GridPreProcessor : MonoBehaviour
         }
 
         CreateEntrances(Cells);
-        CreateClusterConnections();
+
+        for (int w = 0; w < m_ClusterResolution; ++w)
+        {
+            for (int h = 0; h < m_ClusterResolution; ++h)
+            {
+                CreateClusterConnections(new Vector2Int(w,h));
+            }
+        }
    
     }
 
@@ -93,15 +109,12 @@ public class GridPreProcessor : MonoBehaviour
             Cluster TopNeighbourCluster = m_Clusters[clusterIdx.x, clusterIdx.y + 1];
             HandleEntrancesTop(currentCluster, TopNeighbourCluster, cells);
         }
+
+        //handeling the inner connections of our cluster
+        CreateClusterConnections(clusterIdx);
         
         //rerendering the graph visualizer 
         GetComponentInChildren<WorldGraphVisualizer>().SetVisualized();
-    }
-
-    private struct Entrance
-    {
-        public Vector2Int startCell;
-        public int widht;
     }
 
     private void CreateEntrances(GridWorld.Cell[,] Cells)
@@ -688,9 +701,66 @@ public class GridPreProcessor : MonoBehaviour
         return clusterIdx;
     }
 
-
-    private void CreateClusterConnections()
+    private struct innerClusterConnection
     {
+        public NodeGraph.Node node1;
+        public NodeGraph.Node node2;
+        public float weight;
+    }
+    private void CreateClusterConnections(Vector2Int clusterIdx)
+    {
+        Cluster cluster = m_Clusters[clusterIdx.x, clusterIdx.y];
+
+        //limiting the pathfinding to the size of the cluster
+        m_Pathfinding.SearchRect = new Vector4(cluster.pos.x,cluster.pos.y
+            ,cluster.pos.x + m_ClusterSize,cluster.pos.y + m_ClusterSize);
+
+        List <innerClusterConnection> checkedNodeConnections = new List<innerClusterConnection>();
+
+        //going through all the possible node connections and deciding their weights
+        foreach(NodeGraph.Node node in cluster.nodes)
+        {
+            foreach(NodeGraph.Node otherNode in cluster.nodes)
+            {
+                //check if the node is itself
+                if (node.pos == otherNode.pos)
+                    continue;
+
+                //check if the connection was already checked
+                if (checkedNodeConnections.Exists(x =>
+                 (x.node1.pos == node.pos && x.node2.pos == otherNode.pos)
+                 || (x.node1.pos == otherNode.pos && x.node2.pos == node.pos)))
+                    continue;
+
+
+
+                //calculate the weight of the node connection
+                List<Vector2Int> path = m_Pathfinding.FindPathAStar(node.pos,otherNode.pos);
+                float pathWeight = m_Pathfinding.CalculatePathWeight(path);
+
+                //check if a path is possible
+                if (pathWeight <= 0)
+                    continue;
+
+                //add the connection to the already checked ones
+                innerClusterConnection checkedConnection = new innerClusterConnection();
+                checkedConnection.node1 = node;
+                checkedConnection.node2 = otherNode;
+                checkedConnection.weight = pathWeight;
+                checkedNodeConnections.Add(checkedConnection);
+            }
+        }
+
+        //adding the connections to the world graph for this cluster
+        foreach(innerClusterConnection innerConnection in checkedNodeConnections)
+        {
+            //add connection in both directions
+            m_NodeGraph.AddConnection(innerConnection.node1, innerConnection.node2, innerConnection.weight);
+            m_NodeGraph.AddConnection(innerConnection.node2, innerConnection.node1, innerConnection.weight);
+        }
         
+
+        //setting the pathfinding size back to the size of the world
+        m_Pathfinding.SetSizeToWorld();
     }
 }
