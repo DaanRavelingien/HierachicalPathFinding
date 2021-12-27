@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class WorldGenerator : MonoBehaviour
+public class WorldGenerator
 {
-    [SerializeField]
-    GridWorld m_GridWorld = null;
+    private GridWorld m_GridWorld = null;
+    public WorldGenerator(GridWorld world)
+    {
+        m_GridWorld = world;
+    }
 
     public void GenerateMaze(int wallThickness)
     {

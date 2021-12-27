@@ -230,7 +230,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 123380757}
-  - component: {fileID: 123380758}
   - component: {fileID: 123380755}
   - component: {fileID: 123380756}
   m_Layer: 0
@@ -340,23 +339,6 @@ Transform:
   m_Father: {fileID: 1994130714}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &123380758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 123380754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b20b7b0500a82304da20826e2ba90d65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_GraphLayer: {fileID: 123380754}
-  m_GridPreProcessor: {fileID: 1994130716}
-  m_ConnectionLinePrefab: {fileID: 1607452686995467842, guid: 014f22901c7df48449d49746866842f5, type: 3}
-  m_EntranceNodeTile: {fileID: 11400000, guid: b024abab95375af40a4068175b5e95c6, type: 2}
-  m_ClusterBorderTile: {fileID: 11400000, guid: 4bab1224a6d10ad48bed8b6086c958e4, type: 2}
 --- !u!1 &1049013320
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,11 +586,8 @@ GameObject:
   - component: {fileID: 1994130714}
   - component: {fileID: 1994130713}
   - component: {fileID: 1994130718}
-  - component: {fileID: 1994130712}
   - component: {fileID: 1994130717}
-  - component: {fileID: 1994130716}
   - component: {fileID: 1994130715}
-  - component: {fileID: 1994130720}
   - component: {fileID: 1994130719}
   m_Layer: 0
   m_Name: World
@@ -617,19 +596,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1994130712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994130711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b0a99cebb866754695544e647f0b911, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_GridWorld: {fileID: 1994130718}
 --- !u!156049354 &1994130713
 Grid:
   m_ObjectHideFlags: 0
@@ -674,21 +640,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_World: {fileID: 1994130718}
   m_Camera: {fileID: 75934926}
-  m_Pathfinding: {fileID: 1994130720}
---- !u!114 &1994130716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994130711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeda1179dac01984ea95ef6a8010db4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ClusterResolution: 27
-  m_Pathfinding: {fileID: 1994130720}
 --- !u!114 &1994130717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -758,9 +709,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836439779106f4f4f905ab146311c136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WorldSize: {x: 243, y: 243}
-  m_WorldGenerator: {fileID: 1994130712}
-  m_GridPreProcessor: {fileID: 1994130716}
+  m_WorldSize: {x: 27, y: 27}
+  m_PathVisualizer: {fileID: 1994130719}
 --- !u!114 &1994130719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -773,24 +723,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e735bdf339497544ab7f6a4d13077ac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_World: {fileID: 0}
   m_PathTile: {fileID: 11400000, guid: cd021288ef596d2429f4e5e967150621, type: 2}
-  m_StartTile: {fileID: 11400000, guid: 325e6a19b5ca7414e9c7356c5eeb3595, type: 2}
-  m_GoalTile: {fileID: 11400000, guid: 85a40782f65a3e144a339e4d953e96ce, type: 2}
+  m_PathEndTile: {fileID: 11400000, guid: 325e6a19b5ca7414e9c7356c5eeb3595, type: 2}
   m_PathLayer: {fileID: 2011059426}
---- !u!114 &1994130720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1994130711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c5aae1236031b049aa4ec396b1e3fd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_World: {fileID: 1994130718}
-  m_PathVisualizer: {fileID: 1994130719}
+  m_GraphLayer: {fileID: 123380754}
+  m_ConnectionLinePrefab: {fileID: 1607452686995467842, guid: 014f22901c7df48449d49746866842f5, type: 3}
+  m_EntranceNodeTile: {fileID: 11400000, guid: b024abab95375af40a4068175b5e95c6, type: 2}
+  m_ClusterBorderTile: {fileID: 11400000, guid: 4bab1224a6d10ad48bed8b6086c958e4, type: 2}
 --- !u!1 &2011059426
 GameObject:
   m_ObjectHideFlags: 0

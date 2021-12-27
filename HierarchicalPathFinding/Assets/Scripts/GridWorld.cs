@@ -12,11 +12,22 @@ public class GridWorld : MonoBehaviour
         private set { m_WorldSize = value; }
     }
 
-    [SerializeField]
     private WorldGenerator m_WorldGenerator = null;
 
     [SerializeField]
-    private GridPreProcessor m_GridPreProcessor = null;
+    private PathVisualizer m_PathVisualizer = null;
+    public PathVisualizer PathVisualizer
+    {
+        get { return m_PathVisualizer; }
+        private set { m_PathVisualizer = value; }
+    }
+
+    private Pathfinding m_Pathfinding = null;
+    public Pathfinding GridPathFinding
+    {
+        get { return m_Pathfinding; }
+        private set { m_Pathfinding = value; }
+    }
 
     public enum CellType
     {
@@ -57,12 +68,18 @@ public class GridWorld : MonoBehaviour
             }
         }
 
+        m_WorldGenerator = new WorldGenerator(this);
         m_WorldGenerator.GenerateMaze(3);
         m_WorldGenerator.CreateBorder(6);
 
-        m_GridPreProcessor.PreProcessingGrid(m_WorldCells, m_WorldSize.x);
-    }
+        m_Pathfinding = new Pathfinding();
+        m_Pathfinding.SetSizeToWorld(this);
+        //for hirarchical pathfinding we need to pre process the world
+        m_Pathfinding.PreProcessingGrid(this, Cells, WorldSize.x);
 
+        //showing the abstract graph
+        m_PathVisualizer.ShowPreProcessedGraph();
+    }
     public void ToggleCell(Vector2 pos)
     {
         if(pos.x >= 0 || pos.y >= 0 || pos.x < m_WorldSize.x || pos.y < m_WorldSize.y)
@@ -79,7 +96,7 @@ public class GridWorld : MonoBehaviour
             GetComponent<WorldVisualizer>().SetVisualized();
 
             //recalculating the cluster where the cell was in
-            m_GridPreProcessor.PreProcessCluster(cellPos, Cells);
+            m_Pathfinding.PreProcessCluster(this, cellPos, Cells);
         }
     }
 }

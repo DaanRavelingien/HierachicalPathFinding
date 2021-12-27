@@ -10,36 +10,43 @@ public class GridInteractionScript : MonoBehaviour
     [SerializeField]
     Camera m_Camera = null;
 
-    [SerializeField]
-    Pathfinding m_Pathfinding = null;
-
-    private Vector2Int m_PathStart = new Vector2Int();
-    private Vector2Int m_PathGoal = new Vector2Int();
+    private Vector2Int? m_PathStart = null;
+    private Vector2Int? m_PathGoal = null;
 
     private void Update()
     {
         //left mouse button
         //toggle tile between wall and ground
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             Vector2 clickedPos = m_Camera.ScreenToWorldPoint(Input.mousePosition);
 
             m_World.ToggleCell(clickedPos);
-            m_Pathfinding.FindPathAStar(m_PathStart, m_PathGoal);
+            m_World.PathVisualizer.ShowPreProcessedGraph();
+            if (m_PathStart.HasValue && m_PathGoal.HasValue)
+                m_World.PathVisualizer.ShowPath(m_World.GridPathFinding.FindPathHirarchicalAStar(m_World,
+                    m_PathStart.Value,
+                    m_PathGoal.Value));
         }
         //right mouse button
         if (Input.GetMouseButtonUp(1))
         {
             Vector2 clickedPos = m_Camera.ScreenToWorldPoint(Input.mousePosition);
             m_PathGoal = new Vector2Int((int)clickedPos.x, (int)clickedPos.y);
-            m_Pathfinding.FindPathAStar(m_PathStart, m_PathGoal);
+            if (m_PathStart.HasValue && m_PathGoal.HasValue)
+                m_World.PathVisualizer.ShowPath(m_World.GridPathFinding.FindPathHirarchicalAStar(m_World,
+                    m_PathStart.Value,
+                    m_PathGoal.Value));
         }
         //middle moust button
         if (Input.GetMouseButtonUp(2))
         {
             Vector2 clickedPos = m_Camera.ScreenToWorldPoint(Input.mousePosition);
             m_PathStart = new Vector2Int((int)clickedPos.x, (int)clickedPos.y);
-            m_Pathfinding.FindPathAStar(m_PathStart, m_PathGoal);
+            if (m_PathStart.HasValue && m_PathGoal.HasValue)
+                m_World.PathVisualizer.ShowPath(m_World.GridPathFinding.FindPathHirarchicalAStar(m_World,
+                    m_PathStart.Value,
+                    m_PathGoal.Value));
         }
     }
 }
