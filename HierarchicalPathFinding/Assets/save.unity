@@ -709,7 +709,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836439779106f4f4f905ab146311c136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WorldSize: {x: 27, y: 27}
+  m_WorldSize: {x: 243, y: 243}
   m_PathVisualizer: {fileID: 1994130719}
 --- !u!114 &1994130719
 MonoBehaviour:
@@ -723,7 +723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e735bdf339497544ab7f6a4d13077ac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_World: {fileID: 0}
+  m_World: {fileID: 1994130718}
   m_PathTile: {fileID: 11400000, guid: cd021288ef596d2429f4e5e967150621, type: 2}
   m_PathEndTile: {fileID: 11400000, guid: 325e6a19b5ca7414e9c7356c5eeb3595, type: 2}
   m_PathLayer: {fileID: 2011059426}
