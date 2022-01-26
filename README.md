@@ -13,13 +13,13 @@ In Hierarchical pathfinding we pre calculate the world first and construct a gra
 Obviously, we firs need a world before we can pathfind in a world we first need a world.
  So, I created a simple world generator on a 2d grid as test platform for my implementation.
 
-![WorldImg](pictures/world.JPG)
+![WorldImg](pictures/world.JPG)<br/>
 *Picture of the world*
 
 After we have the world, we need to process the world before we can start pathfinding with.
  First we divide the world into clusters as shown in the picture below.
 
-![CluserImg](pictures/clusters.JPG)
+![CluserImg](pictures/clusters.JPG)<br/>
 *Picture of clusters*
 
 After we have the clusters we can check their boarders for entrances to the other clusters,
@@ -27,7 +27,7 @@ After we have the clusters we can check their boarders for entrances to the othe
  If we have more then 3 of these entrances next to each other,
  we will only keep the outer ones since the entrances in the middle are unnecessary.
 
-![EntranceImg](pictures/entrances.JPG)
+![EntranceImg](pictures/entrances.JPG)<br/>
 *Picture of cluster with entrances*
 
 Of course, the entrances will be just nodes in our abstract graph of our world so we will
@@ -37,15 +37,15 @@ Of course, the entrances will be just nodes in our abstract graph of our world s
  We do this by just finding the path to another entrance in the cluster with A* and add the heuristic weight
  as the connection weight, I don’t save the path.
 
-![GraphImg](pictures/graph.JPG)
-*Picture of clusters with entrances*
+![GraphImg](pictures/graph.JPG)<br/>
+*Picture of the graph*
 
 Once we do this, we have a graph we can use to navigate our world.
  The next step is to use this graph.
  I did that by just connecting the start node to the graph as well as the goal node,
  then we can just do an A* search on our graph and pathfind from entrance to entrance with A* as well.
 
-![PathImg](pictures/path.JPG)
+![PathImg](pictures/path.JPG)<br/>
 *Picture of final result*
 
 ![PathGraphImg](pictures/path&graph.JPG)
